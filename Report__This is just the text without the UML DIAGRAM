@@ -1,0 +1,58 @@
+ECM 2414 Software Development
+Continuous Assessment 1
+“Pebbles” Game Report
+
+1.	Introduction 
+1.1	Game
+The aim of this program is to simulate a game of “Pebbles”.  The game is played by several players who start by drawing 10 pebbles from one of the three black bags, chosen on random. The pebbles have positive integer weights. Each player plays independently of the other players and has to always have 10 pebbles in his hand. A player wins the game if the weight of the pebbles in their hand is 100; otherwise, they should discard a pebble to the paired white bag of the last drawn pebble. Whenever they discard a pebble, they should get a new one from one of the black bags. If a black bag empties out, the player should attempt to select another black bag until they find a non-empty one and the empty one should be filled with the pebbles of the corresponding white bag.  
+2.	Planning and Design
+
+2.1	Planning
+We started off by discussing what would be the main obstacles to overcome in order to create a robust and efficient program. We reached the conclusion that implementing each player as a thread would be time consuming, since we were not experienced in the sphere of concurrency and multi-threading. Therefore this would have required a lot of external reading. Since we did not know how to implement multiple threads in a program, we decided that we would spend the majority of our time testing our application for possible bugs. We then established a schedule of when we would work together and the time it would take to complete each stage of the program’s development.  The stages of implementation we outlined were:
+-	Creating the exception classes (and testing the exceptions with mock objects)
+-	Creating the base structure of the program.
+-	Handling the input and output of the program
+-	Implementing threads in the base structure of the program
+Each of these stages had to be accompanied by the required amount of testing, so that when progressing to the next stage we had to be confident that there are no issues with the current one. We decided that after completing all the stages, we should then begin the testing of the whole program. The details for that are outlined in the section “Testing” of this report.
+
+2.2	Design
+2.2.1 High- Level Design
+ 
+2.2.3 Detailed Design
+-	We are going to create separate objects for each Pebble and each Player.
+-	Employ the use of nested classes – PebbleGame is our main class and other classes are defined inside
+-	 All of the static methods are in a separate nested class inside the main class, so that they could be used in a simpler way throughout the program.
+-	We tried really hard to do most of the actions with the use of separate methods, so that it could be better structured and easier to read.
+-	The white/black bags are effectively ArrayLists, filled with “Pebble” objects
+-	We use a custom random number generator.
+
+-	InputOutput – Here is where our methods for user interaction are located . In getFileDir() and getNumberOfPlayers() the player is asked for the number of players and then for three file paths. In readFileAndFillArray() the data, inputted by the user, about the file paths is analyzed and three lists are filled with the contents of the three files; these are going to be the black bags used in the game. Finally, isValidNumberOfPlayers() checks if the user inputted number of players is positive and isValidPlayerToWeightRatio() checks if the count of the weight values in an inputted csv file corresponds to the number of players in ratio 4:1.
+
+3.	Implementation
+3.1	Implementation
+At first we thought that implementing the threads would be the hardest part of the whole development process for us. Despite the fact that it was new for us, we managed to tackle the problem by allocating each thread to represent a player in the overall game. This thread accesses the class “PlayerActions” every time a game action needs to happen (drawing/discarding/transferring/ etc.). These actions are done in a constant loop by the thread and are only stopped when one of the threads wins (satisfies the given condition). Then, all the threads exit the loop (after it has been made sure that each thread has 10 elements in the list representing the hand of pebbles) and the winning thread announces the fact that it has won.
+A big problem we had to tackle was the efficiency of the program. Whilst we were ready with all the functionalities over a week before the deadline, we thought that our program took too long to output the results to a file. Hence, despite our design ideas, we decided that there is no need for the list representing the pebbles in the hand of the current player to contain instances of the ‘Pebble’ class for efficiency reasons. Thus, we switched the listed to contain integers, corresponding to the weights of each of the pebbles. After we conducted our testing we found out that we saved an average of 10 to 30 seconds per a game of pebbles, hence we kept the changes. Furthermore, we made several changes in the process of drawing and discarding the pebbles, which improved the run-time of the program with a further 10 to 15 seconds.
+
+
+3.2 Testing
+-	We tested if the bags were filled and emptied in a correct manner.
+-	We tested if the conditions of triggering the transfer of pebbles from the hand to the corresponding white bag are true.
+-	We tested File Input and Output (exceptions, etc.).
+-	We tested if the bags are filled atomically (draw/discard/etc.).
+-	We created Unit Tests for the following:
+o	Assert that the winning hand consists of pebbles with a total weight of 100.
+o	Assert that all players draw 10 pebbles initially. 
+o	Assert that no black bag initially contains pebbles less than 11 times the number of players.
+o	Assert that the number of pebbles in each player’s hand is always either 9 or 10 after the initial draw.
+o	Assert that the number of pebbles in each white bag inversely corresponds to the number of pebbles in the paired black bag.
+o	Assert that at the end of the game every player has 10 pebbles in their hand.
+o	Assert that after each draw and discard the program outputs a corresponding message to a file.
+
+4.	Conclusion
+4.1 Skills Gained and Improved
+Throughout this assignment we felt that our skills in many key areas improved. Some of those areas are:
+-	Version Control Systems – We employed the use of GitHub to save and synchronize versions of our work, while coding on two different machines. While this is not assessed in the assignment, we felt that it would be useful to make use of this sort of system simply because it would make it easier for us to work together and, more importantly, in the future, when this kind of thing would be assessed (then needed in a real job), we would already have had experience with a VCS. We chose GitHub, because we thought it would be the easiest to learn, it has a lot of support and tutorials, and, last but not least, was taught in the workshops for the Software Development module.
+-	Concurrency and use of threads – We felt that we understand a lot better the concept of concurrency after we did this assignment since we hadn’t had any real practical experience doing it. 
+-	Pair Programming – Despite the fact that we had a little experience from Year 1 on this skill, putting it in use again and for an even bigger project really helped us improve.
+-	Problem Solving Skills & Attention to Detail
+
